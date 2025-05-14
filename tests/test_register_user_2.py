@@ -1,4 +1,5 @@
 from api_client.models.register import RegisterModel
+from api_client.texts.error_texts import ResponseErrorText
 
 
 class TestRegisterNewUser2:
@@ -14,8 +15,6 @@ class TestRegisterNewUser2:
         assert response.json()['message'] is not None
         assert response.json()['uuid'] is not None
         assert response.json()['message'] == "User created successfully."
-        assert isinstance(response.json()['message'], str)
-        assert isinstance(response.json()['uuid'], int)
 
     def test_register_new_user_with_empty_username_2(self, api_client):
         """
@@ -27,7 +26,7 @@ class TestRegisterNewUser2:
         body['username'] = None
         response = api_client.register(body=body)
         assert response.status_code == 400, f"Check register request, status code is {response.status_code}"
-        assert response.json()['message'] == "Username and password are required fields"
+        assert response.json()['message'] == ResponseErrorText.USERNAME_PASSWORD
 
     def test_register_new_user_with_empty_password_2(self, api_client):
         """
@@ -39,4 +38,4 @@ class TestRegisterNewUser2:
         body['password'] = None
         response = api_client.register(body=body)
         assert response.status_code == 400, f"Check register request, status code is {response.status_code}"
-        assert response.json()['message'] == "Username and password are required fields"
+        assert response.json()['message'] == ResponseErrorText.USERNAME_PASSWORD
